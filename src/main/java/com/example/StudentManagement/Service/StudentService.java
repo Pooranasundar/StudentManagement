@@ -83,9 +83,4 @@ public class StudentService
     }
 
 
-    public Students getEmployeeFromCity(String city)
-        {
-
-        }
-
 }
