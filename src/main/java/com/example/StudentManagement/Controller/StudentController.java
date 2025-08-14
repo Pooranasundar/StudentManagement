@@ -1,12 +1,16 @@
 package com.example.StudentManagement.Controller;
 
+import com.example.StudentManagement.Model.StudentIdAndDeptList;
 import com.example.StudentManagement.Model.Students;
 import com.example.StudentManagement.Service.StudentException;
 import com.example.StudentManagement.Service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class StudentController
@@ -48,6 +52,12 @@ public class StudentController
     public List<Students> getStudentByName(@PathVariable String studName)
     {
         return service.getStudentByName(studName);
+    }
+
+    @PostMapping("/students/by-ids-departments")
+    public ResponseEntity<Map<String, Object>> getStudentsBYIDAndDept(@RequestBody StudentIdAndDeptList idAndDeptList) {
+        Map<String, Object> response = service.getStudentsByIdsAndDepartments(idAndDeptList);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping("/add/student")

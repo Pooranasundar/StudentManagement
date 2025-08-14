@@ -1,11 +1,13 @@
 package com.example.StudentManagement.Service;
 
+import com.example.StudentManagement.Model.StudentIdAndDeptList;
 import com.example.StudentManagement.Model.Students;
 import com.example.StudentManagement.Repository.StudentRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class StudentService
@@ -38,6 +40,31 @@ public class StudentService
         return repo.findByName(studName);
     }
 
+    public Map<String, Object> getStudentsByIdsAndDepartments(StudentIdAndDeptList idAndDeptList) {
+        List<Students> students = repo.findByIdInAndDeptIn(idAndDeptList.getStudentsIds(), idAndDeptList.getStudentsDept());
+
+        //(Students -> Students.getId(),Students -> Students.getDept())
+
+        Map<Integer, String> studentsMap = students.stream().collect(Collectors.toMap(Students::getId, Students::getName));
+
+        Map<Integer, String> studentsDeptMap = students.stream().collect(Collectors.toMap(Students::getId,
+                Students::getDept));
+
+        List<String> notInDepartment = new ArrayList<>();
+
+        for (Integer id : idAndDeptList.getStudentsIds()) {
+            if (!studentsMap.containsKey(id)) {
+                notInDepartment.add("Student with ID " + id + " is not in the specified departments.");
+            }
+        }
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("Students ", studentsMap);
+        result.put("Student Not In Department", notInDepartment);
+
+        return result;
+    }
+
     public void addStudents(Students stud)
     {
         repo.save(stud);
@@ -54,4 +81,11 @@ public class StudentService
     {
         repo.deleteById(studId);
     }
+
+
+    public Students getEmployeeFromCity(String city)
+        {
+
+        }
+
 }

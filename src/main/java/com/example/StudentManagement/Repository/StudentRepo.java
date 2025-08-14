@@ -13,4 +13,8 @@ public interface StudentRepo extends JpaRepository<Students, Integer>
     List<Students> findByAge(int age);
 
     List<Students> findByName(String name);
+
+    List<Students> findByIdInAndDeptIn(List<Integer> id, List<String> dept);
+
+
 }

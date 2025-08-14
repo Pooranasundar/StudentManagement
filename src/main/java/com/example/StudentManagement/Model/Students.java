@@ -6,6 +6,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 @Entity
 public class Students
@@ -13,10 +15,12 @@ public class Students
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private int id;
+    private Integer id;
     private String name;
     private String dept;
     private int age;
+
+
 
     public Students()
     {
